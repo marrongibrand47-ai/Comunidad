@@ -4,43 +4,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GAMS Comunal | Gestión Comunitaria & Administración Financiera</title>
-  <meta name="theme-color" content="#09090B" />
+  <meta name="theme-color" content="#F8FAFC" />
   <meta name="description" content="Plataforma Integral de Censo Comunitario, Administración Contable y Control de Jornadas - Ecosistema GAMS Company" />
   <link rel="manifest" href="/manifest.json" />
 
-  <!-- Tipografías -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Librerías CDN (Chart.js, SheetJS para Excel, QRCode.js para Constancias) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
     :root {
-      --bg-void: #09090B;
-      --bg-surface: #121218;
-      --bg-elevated: #1A1A22;
-      --bg-hover: #22222C;
-      --gold-primary: #D4AF37;
-      --gold-light: #F3E5AB;
-      --gold-dark: #AA8020;
-      --gold-glow: rgba(212, 175, 55, 0.16);
-      --border-subtle: rgba(212, 175, 55, 0.22);
-      --border-strong: rgba(212, 175, 55, 0.48);
-      --text-main: #F8FAFC;
-      --text-muted: #A1A1AA;
-      --text-dim: #71717A;
-      --success: #10B981;
-      --danger: #EF4444;
-      --warning: #F59E0B;
-      --info: #3B82F6;
+      /* Identidad Clara GAMS Company (Marfil / Gris Claro + Dorado Ejecutivo) */
+      --bg-void: #F4F6FA;
+      --bg-surface: #FFFFFF;
+      --bg-elevated: #F8FAFC;
+      --bg-hover: #EEF2F7;
+      --gold-primary: #B8860B;
+      --gold-light: #8A6200;
+      --gold-dark: #D4AF37;
+      --gold-glow: rgba(184, 134, 11, 0.12);
+      --border-subtle: rgba(15, 23, 42, 0.10);
+      --border-strong: rgba(184, 134, 11, 0.42);
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --text-dim: #64748B;
+
+      /* Acentos por Módulo del Ecosistema GAMS en Modo Claro */
+      --mod-accent: #B8860B;
+      --mod-accent-soft: rgba(184, 134, 11, 0.10);
+      --mod-accent-border: rgba(184, 134, 11, 0.38);
+
+      --accent-comercio: #0284C7;     /* Azul Cielo Comercio */
+      --accent-hoteleria: #7E22CE;    /* Violeta Intenso Hotelería */
+      --accent-finanzas: #059669;     /* Esmeralda Finanzas & Contabilidad */
+      --accent-agenda: #E11D48;       /* Rosa / Coral Agendas */
+      --accent-referidos: #D97706;    /* Ámbar Referidos */
+
+      --success: #059669;
+      --danger: #DC2626;
+      --warning: #D97706;
+      --info: #0284C7;
       --radius: 12px;
       --radius-sm: 8px;
-      --shadow-gold: 0 8px 30px rgba(0, 0, 0, 0.55), 0 0 18px rgba(212, 175, 55, 0.08);
+      --shadow-gams: 0 6px 20px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
     }
+
+    /* Temas claros dinámicos por módulo activo */
+    body[data-theme="dashboard"] { --mod-accent: #B8860B; --mod-accent-soft: rgba(184, 134, 11, 0.10); --mod-accent-border: rgba(184, 134, 11, 0.40); }
+    body[data-theme="censo"]     { --mod-accent: #0284C7; --mod-accent-soft: rgba(2, 132, 199, 0.10); --mod-accent-border: rgba(2, 132, 199, 0.38); }
+    body[data-theme="comercios"] { --mod-accent: #7E22CE; --mod-accent-soft: rgba(126, 34, 206, 0.10); --mod-accent-border: rgba(126, 34, 206, 0.38); }
+    body[data-theme="constancias"]{ --mod-accent: #E11D48; --mod-accent-soft: rgba(225, 29, 72, 0.10); --mod-accent-border: rgba(225, 29, 72, 0.38); }
+    body[data-theme="finanzas"]  { --mod-accent: #059669; --mod-accent-soft: rgba(5, 150, 105, 0.10); --mod-accent-border: rgba(5, 150, 105, 0.38); }
+    body[data-theme="beneficios"]{ --mod-accent: #D97706; --mod-accent-soft: rgba(217, 119, 6, 0.10); --mod-accent-border: rgba(217, 119, 6, 0.38); }
+    body[data-theme="proyectos"] { --mod-accent: #2563EB; --mod-accent-soft: rgba(37, 99, 235, 0.10); --mod-accent-border: rgba(37, 99, 235, 0.38); }
+    body[data-theme="seguridad"] { --mod-accent: #B8860B; --mod-accent-soft: rgba(184, 134, 11, 0.10); --mod-accent-border: rgba(184, 134, 11, 0.40); }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -51,17 +72,16 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      transition: background-color 0.25s ease;
     }
 
-    /* Scrollbar */
     ::-webkit-scrollbar { width: 7px; height: 7px; }
     ::-webkit-scrollbar-track { background: var(--bg-void); }
-    ::-webkit-scrollbar-thumb { background: #2E2E3A; border-radius: 999px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--gold-primary); }
 
-    /* Gold Gradient Text & Buttons */
     .gold-gradient-text {
-      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
+      background: linear-gradient(135deg, #8A6200 0%, #C59412 55%, #D4AF37 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -82,37 +102,41 @@
     }
     .btn:disabled { opacity: 0.45; cursor: not-allowed; }
     .btn-gold {
-      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
-      color: #09090B;
-      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25);
+      background: linear-gradient(135deg, #E5C158 0%, #C59412 60%, #9E761B 100%);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(184, 134, 11, 0.22);
     }
-    .btn-gold:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.06); }
+    .btn-gold:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.05); }
+    .btn-accent {
+      background: var(--mod-accent-soft);
+      border-color: var(--mod-accent-border);
+      color: var(--text-main);
+    }
+    .btn-accent:hover:not(:disabled) { filter: brightness(0.97); border-color: var(--mod-accent); }
     .btn-outline {
-      background: transparent;
+      background: #FFFFFF;
       border-color: var(--border-strong);
-      color: var(--gold-primary);
+      color: var(--gold-light);
     }
     .btn-outline:hover:not(:disabled) { background: var(--gold-glow); }
     .btn-dark {
       background: var(--bg-elevated);
-      border-color: rgba(255,255,255,0.1);
+      border-color: rgba(15, 23, 42, 0.12);
       color: var(--text-main);
     }
     .btn-dark:hover:not(:disabled) { background: var(--bg-hover); }
     .btn-danger {
-      background: rgba(239, 68, 68, 0.14);
-      border-color: rgba(239, 68, 68, 0.4);
-      color: #FCA5A5;
+      background: rgba(220, 38, 38, 0.08);
+      border-color: rgba(220, 38, 38, 0.30);
+      color: #B91C1C;
     }
-    .btn-danger:hover:not(:disabled) { background: rgba(239, 68, 68, 0.25); }
+    .btn-danger:hover:not(:disabled) { background: rgba(220, 38, 38, 0.16); }
     .btn-sm { padding: 6px 11px; font-size: 0.78rem; }
 
-    /* Layout Shell */
     .app-shell { display: flex; flex: 1; min-height: 100vh; }
 
-    /* Sidebar */
     .sidebar {
-      width: 270px;
+      width: 274px;
       background: var(--bg-surface);
       border-right: 1px solid var(--border-subtle);
       display: flex;
@@ -129,26 +153,36 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 6px 10px 20px;
+      padding: 6px 10px 18px;
       border-bottom: 1px solid var(--border-subtle);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .brand-logo {
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background: linear-gradient(135deg, var(--gold-light), var(--gold-primary), var(--gold-dark));
-      color: #09090B;
+      background: linear-gradient(135deg, #E5C158, #C59412, #9E761B);
+      color: #FFFFFF;
       font-weight: 800;
       font-size: 1.1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
+      box-shadow: 0 4px 12px rgba(184, 134, 11, 0.25);
       flex-shrink: 0;
     }
     .brand-title { font-weight: 800; font-size: 1.05rem; letter-spacing: 0.4px; }
     .brand-sub { font-size: 0.72rem; color: var(--text-muted); display: block; }
+
+    .gams-suite-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      padding: 0 4px 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 10px;
+    }
+    .suite-chip { height: 6px; border-radius: 999px; }
 
     .nav-group-label {
       font-size: 0.68rem;
@@ -177,18 +211,18 @@
     }
     .nav-item:hover { background: var(--bg-elevated); color: var(--text-main); }
     .nav-item.active {
-      background: var(--gold-glow);
-      border-color: var(--border-strong);
-      color: var(--gold-light);
+      background: var(--mod-accent-soft);
+      border-color: var(--mod-accent-border);
+      color: var(--text-main);
       font-weight: 600;
+      box-shadow: inset 3px 0 0 var(--mod-accent);
     }
 
-    /* Main Content */
     .main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; }
     .topbar {
-      background: rgba(18, 18, 24, 0.88);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--mod-accent-border);
       padding: 14px 24px;
       display: flex;
       align-items: center;
@@ -199,7 +233,15 @@
       z-index: 30;
     }
     .topbar-left { display: flex; align-items: center; gap: 12px; }
-    .menu-toggle { display: none; background: var(--bg-elevated); border: 1px solid var(--border-subtle); color: var(--gold-primary); padding: 8px 10px; border-radius: 8px; cursor: pointer; }
+    .module-indicator-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--mod-accent);
+      box-shadow: 0 0 8px var(--mod-accent);
+      flex-shrink: 0;
+    }
+    .menu-toggle { display: none; background: var(--bg-elevated); border: 1px solid var(--border-subtle); color: var(--gold-light); padding: 8px 10px; border-radius: 8px; cursor: pointer; }
     .status-pills { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .pill {
       display: inline-flex;
@@ -210,22 +252,31 @@
       font-size: 0.75rem;
       font-weight: 600;
       background: var(--bg-elevated);
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
     }
     .dot { width: 8px; height: 8px; border-radius: 50%; }
-    .dot-online { background: var(--success); box-shadow: 0 0 8px var(--success); }
-    .dot-offline { background: var(--warning); box-shadow: 0 0 8px var(--warning); }
+    .dot-online { background: var(--success); }
+    .dot-offline { background: var(--warning); }
 
     .content-wrap { padding: 24px; max-width: 1440px; width: 100%; margin: 0 auto; }
 
-    /* Cards & Grids */
     .card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius);
       padding: 20px;
-      box-shadow: var(--shadow-gold);
+      box-shadow: var(--shadow-gams);
       margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold-primary), var(--mod-accent), transparent);
     }
     .card-header {
       display: flex;
@@ -235,7 +286,7 @@
       margin-bottom: 16px;
       flex-wrap: wrap;
     }
-    .card-title { font-size: 1.05rem; font-weight: 700; color: var(--gold-light); }
+    .card-title { font-size: 1.05rem; font-weight: 700; color: var(--text-main); }
 
     .kpi-grid {
       display: grid;
@@ -244,68 +295,66 @@
       margin-bottom: 22px;
     }
     .kpi-card {
-      background: linear-gradient(160deg, var(--bg-elevated) 0%, var(--bg-surface) 100%);
+      background: #FFFFFF;
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius);
       padding: 18px;
       position: relative;
       overflow: hidden;
+      box-shadow: var(--shadow-gams);
     }
     .kpi-card::after {
       content: "";
       position: absolute;
-      top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold-primary), var(--mod-accent));
     }
-    .kpi-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; }
+    .kpi-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; }
     .kpi-value { font-size: 1.65rem; font-weight: 800; margin: 6px 0 2px; color: var(--text-main); }
-    .kpi-sub { font-size: 0.76rem; color: var(--gold-primary); }
+    .kpi-sub { font-size: 0.76rem; color: var(--mod-accent); font-weight: 600; }
 
     .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px; }
     .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
 
-    /* Forms */
     .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
     label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
     input, select, textarea {
-      background: var(--bg-void);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
       color: var(--text-main);
       padding: 10px 12px;
       border-radius: var(--radius-sm);
       font-size: 0.88rem;
       font-family: inherit;
       width: 100%;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
     input:focus, select:focus, textarea:focus {
       outline: none;
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+      border-color: var(--mod-accent);
+      box-shadow: 0 0 0 3px var(--mod-accent-soft);
     }
     .checkbox-row { display: flex; flex-wrap: wrap; gap: 14px; padding: 6px 0; }
     .checkbox-label { display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem; color: var(--text-main); cursor: pointer; }
-    .checkbox-label input { width: auto; accent-color: var(--gold-primary); }
+    .checkbox-label input { width: auto; accent-color: var(--mod-accent); }
 
-    /* Tables */
-    .table-wrap { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.07); }
+    .table-wrap { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); background: #FFFFFF; }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     th {
-      background: var(--bg-elevated);
-      color: var(--gold-light);
+      background: #F1F5F9;
+      color: var(--text-main);
       text-align: left;
       padding: 11px 14px;
       font-weight: 700;
       font-size: 0.76rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      border-bottom: 1px solid var(--border-subtle);
+      border-bottom: 1px solid #E2E8F0;
       white-space: nowrap;
     }
-    td { padding: 11px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
-    tr:hover td { background: rgba(212, 175, 55, 0.04); }
+    td { padding: 11px 14px; border-bottom: 1px solid #F1F5F9; vertical-align: middle; color: var(--text-main); }
+    tr:hover td { background: var(--mod-accent-soft); }
 
-    /* Badges */
     .badge {
       display: inline-block;
       padding: 3px 9px;
@@ -313,33 +362,32 @@
       font-size: 0.73rem;
       font-weight: 600;
     }
-    .badge-gold { background: rgba(212, 175, 55, 0.16); color: var(--gold-light); border: 1px solid rgba(212, 175, 55, 0.35); }
-    .badge-green { background: rgba(16, 185, 129, 0.15); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.35); }
-    .badge-red { background: rgba(239, 68, 68, 0.15); color: #FCA5A5; border: 1px solid rgba(239, 68, 68, 0.35); }
-    .badge-amber { background: rgba(245, 158, 11, 0.15); color: #FCD34D; border: 1px solid rgba(245, 158, 11, 0.35); }
-    .badge-blue { background: rgba(59, 130, 246, 0.15); color: #93C5FD; border: 1px solid rgba(59, 130, 246, 0.35); }
+    .badge-gold { background: #FEF3C7; color: #92400E; border: 1px solid #F59E0B; }
+    .badge-comercio { background: #E0F2FE; color: #0369A1; border: 1px solid #7DD3FC; }
+    .badge-hoteleria { background: #F3E8FF; color: #6B21A8; border: 1px solid #D8B4FE; }
+    .badge-green { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
+    .badge-red { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+    .badge-amber { background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; }
+    .badge-blue { background: #DBEAFE; color: #1E40AF; border: 1px solid #93C5FD; }
 
-    /* Sections */
     .module-section { display: none; animation: fadeIn 0.22s ease; }
     .module-section.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Progress Bar */
-    .progress-track { width: 100%; height: 9px; background: var(--bg-void); border-radius: 999px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary), var(--gold-light)); border-radius: 999px; }
+    .progress-track { width: 100%; height: 9px; background: #E2E8F0; border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold-primary), var(--mod-accent)); border-radius: 999px; }
 
-    /* Modal & Printable Document */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(5px);
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(4px);
       display: none; align-items: center; justify-content: center; padding: 18px; z-index: 100;
     }
     .modal-backdrop.open { display: flex; }
     .modal-box {
       background: var(--bg-surface); border: 1px solid var(--border-strong); border-radius: var(--radius);
       max-width: 780px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
     }
 
-    /* Hoja Oficial Blanca para Constancias y Rendición PDF */
     .official-sheet {
       background: #FFFFFF;
       color: #111827;
@@ -347,7 +395,7 @@
       border-radius: 6px;
       font-family: 'Times New Roman', Times, serif;
       line-height: 1.6;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border: 1px solid #E2E8F0;
     }
     .official-sheet h2, .official-sheet h3 { text-align: center; text-transform: uppercase; }
     .official-header { border-bottom: 2px solid #111827; padding-bottom: 12px; margin-bottom: 20px; text-align: center; font-size: 0.9rem; }
@@ -355,21 +403,18 @@
     .official-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 42px; gap: 20px; }
     .sign-line { border-top: 1px solid #111827; width: 220px; text-align: center; padding-top: 6px; font-size: 0.85rem; }
 
-    /* Toast */
     .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 200; display: flex; flex-direction: column; gap: 8px; }
     .toast {
-      background: var(--bg-elevated); border-left: 4px solid var(--gold-primary); color: var(--text-main);
-      padding: 12px 16px; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); font-size: 0.85rem;
+      background: #FFFFFF; border: 1px solid var(--border-subtle); border-left: 4px solid var(--mod-accent); color: var(--text-main);
+      padding: 12px 16px; border-radius: 8px; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12); font-size: 0.85rem; font-weight: 500;
     }
 
-    /* Responsive */
     @media (max-width: 920px) {
       .sidebar { position: fixed; left: 0; top: 0; transform: translateX(-100%); }
       .sidebar.open { transform: translateX(0); }
       .menu-toggle { display: inline-flex; }
     }
 
-    /* Print Styling */
     @media print {
       body * { visibility: hidden; }
       #printArea, #printArea * { visibility: visible; }
@@ -381,28 +426,34 @@
     }
   </style>
 </head>
-<body>
+<body data-theme="dashboard">
 
 <div class="app-shell">
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-logo">GC</div>
       <div>
         <div class="brand-title gold-gradient-text">GAMS COMUNAL</div>
-        <span class="brand-sub">Administración & Finanzas</span>
+        <span class="brand-sub">Ecosistema • Finanzas & Gestión</span>
       </div>
+    </div>
+
+    <div class="gams-suite-strip" title="Cromática GAMS: Dorado Base • Cian Comercio • Violeta Hotelería • Esmeralda Finanzas">
+      <span class="suite-chip" style="background: var(--gold-primary);"></span>
+      <span class="suite-chip" style="background: var(--accent-comercio);"></span>
+      <span class="suite-chip" style="background: var(--accent-hoteleria);"></span>
+      <span class="suite-chip" style="background: var(--accent-finanzas);"></span>
     </div>
 
     <div class="nav-group-label">Inteligencia & Control</div>
     <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">📊 Panel Estadístico</button>
 
-    <div class="nav-group-label">Operación Territorial</div>
+    <div class="nav-group-label">Operación & Comercio</div>
     <button class="nav-item" data-tab="censo" onclick="switchTab('censo')">👨‍👩‍👧‍👦 Censo Demográfico</button>
     <button class="nav-item" data-tab="comercios" onclick="switchTab('comercios')">🏪 Comercios y Negocios</button>
     <button class="nav-item" data-tab="constancias" onclick="switchTab('constancias')">📄 Constancias y Avales</button>
 
-    <div class="nav-group-label">Gestión Financiera & Social</div>
+    <div class="nav-group-label">Finanzas & Jornadas</div>
     <button class="nav-item" data-tab="finanzas" onclick="switchTab('finanzas')">💰 Unidad Administrativa</button>
     <button class="nav-item" data-tab="beneficios" onclick="switchTab('beneficios')">📦 Beneficios (CLAP / Gas)</button>
     <button class="nav-item" data-tab="proyectos" onclick="switchTab('proyectos')">🏗️ Proyectos e Incidencias</button>
@@ -411,16 +462,16 @@
     <button class="nav-item" data-tab="seguridad" onclick="switchTab('seguridad')">🔐 Roles y Respaldo</button>
 
     <div style="margin-top:auto; padding-top:16px; border-top:1px solid var(--border-subtle); font-size:0.74rem; color:var(--text-dim);">
-      <div>Ecosistema <strong style="color:var(--gold-primary);">GAMS Company</strong></div>
+      <div>Ecosistema <strong style="color:var(--gold-light);">GAMS Company</strong></div>
       <div>Servicio Comunitario • Contaduría & Finanzas</div>
     </div>
   </aside>
 
-  <!-- MAIN AREA -->
   <div class="main-area">
     <header class="topbar">
       <div class="topbar-left">
         <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <span class="module-indicator-dot" id="moduleDot"></span>
         <div>
           <h1 id="pageTitle" style="font-size:1.1rem; font-weight:700;">Panel de Estadísticas y Control</h1>
           <span id="councilBanner" style="font-size:0.76rem; color:var(--text-muted);">Consejo Comunal • Base de Datos: gams-sc</span>
@@ -432,7 +483,7 @@
           <span class="dot dot-online" id="netDot"></span>
           <span id="netText">En línea • Firebase Sync</span>
         </span>
-        <span class="pill" style="border-color: var(--border-strong); color: var(--gold-light);" id="roleBadge">
+        <span class="pill" style="border-color: var(--mod-accent-border); color: var(--text-main);" id="roleBadge">
           🛡️ Rol: Administrador
         </span>
       </div>
@@ -440,9 +491,6 @@
 
     <main class="content-wrap">
 
-      <!-- =========================================================
-           MÓDULO 6: PANEL DE ESTADÍSTICAS (DASHBOARD) Y EXPORTACIÓN
-      ========================================================== -->
       <section id="tab-dashboard" class="module-section active">
         <div class="card-header">
           <div>
@@ -495,9 +543,6 @@
         </div>
       </section>
 
-      <!-- =========================================================
-           MÓDULO 1: CENSO DEMOGRÁFICO Y SOCIOECONÓMICO
-      ========================================================== -->
       <section id="tab-censo" class="module-section">
         <div class="card write-protected" id="censoFormCard">
           <div class="card-header">
@@ -605,11 +650,10 @@
               </div>
             </div>
 
-            <!-- Carga Familiar -->
-            <div style="background:var(--bg-void); border:1px solid var(--border-subtle); border-radius:8px; padding:14px; margin:12px 0;">
+            <div style="background:var(--bg-elevated); border:1px solid var(--border-subtle); border-radius:8px; padding:14px; margin:12px 0;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <strong style="font-size:0.86rem; color:var(--gold-light);">Integrantes del Grupo Familiar (Adicionales al Jefe)</strong>
-                <button type="button" class="btn btn-outline btn-sm" onclick="addMemberRow()">+ Agregar Familiar</button>
+                <strong style="font-size:0.86rem; color:var(--text-main);">Integrantes del Grupo Familiar (Adicionales al Jefe)</strong>
+                <button type="button" class="btn btn-accent btn-sm" onclick="addMemberRow()">+ Agregar Familiar</button>
               </div>
               <div id="membersContainer"></div>
             </div>
@@ -642,9 +686,6 @@
         </div>
       </section>
 
-      <!-- =========================================================
-           MÓDULO COMPLEMENTARIO: COMERCIOS Y NEGOCIOS LOCALES
-      ========================================================== -->
       <section id="tab-comercios" class="module-section">
         <div class="card write-protected">
           <div class="card-header"><h2 class="card-title">Censo de Comercios, Emprendimientos y Negocios Locales</h2></div>
@@ -656,13 +697,14 @@
               </div>
               <div class="form-group">
                 <label>Nombre Comercial / Razón Social *</label>
-                <input type="text" id="com_nombre" placeholder="Ej: Abasto La Bendición" required />
+                <input type="text" id="com_nombre" placeholder="Ej: Abasto La Bendición / Posada Sol" required />
               </div>
               <div class="form-group">
                 <label>Rubro / Actividad Económica *</label>
                 <select id="com_rubro">
                   <option value="Alimentos y Víveres">Alimentos y Víveres</option>
                   <option value="Panadería / Gastronomía">Panadería / Gastronomía</option>
+                  <option value="Posada / Hospedaje">Posada / Hospedaje</option>
                   <option value="Ferretería / Repuestos">Ferretería / Repuestos</option>
                   <option value="Salud / Farmacia">Salud / Farmacia</option>
                   <option value="Servicios Profesionales / Técnicos">Servicios Profesionales / Técnicos</option>
@@ -703,9 +745,6 @@
         </div>
       </section>
 
-      <!-- =========================================================
-           MÓDULO 2: GESTIÓN ADMINISTRATIVA Y EMISIÓN DE CONSTANCIAS
-      ========================================================== -->
       <section id="tab-constancias" class="module-section">
         <div class="card write-protected">
           <div class="card-header">
@@ -748,9 +787,6 @@
         </div>
       </section>
 
-      <!-- =========================================================
-           MÓDULO 3: UNIDAD ADMINISTRATIVA Y FINANCIERA (CONTABILIDAD)
-      ========================================================== -->
       <section id="tab-finanzas" class="module-section">
         <div class="kpi-grid">
           <div class="kpi-card">
@@ -773,7 +809,7 @@
         <div class="card write-protected">
           <div class="card-header">
             <h2 class="card-title">Libro Diario de Ingresos y Egresos</h2>
-            <button type="button" class="btn btn-outline btn-sm" onclick="openRendicionCuentas()">📑 Generar Rendición de Cuentas (Asamblea)</button>
+            <button type="button" class="btn btn-accent btn-sm" onclick="openRendicionCuentas()">📑 Generar Rendición de Cuentas (Asamblea)</button>
           </div>
           <form onsubmit="saveMovimiento(event)">
             <div class="grid-3">
@@ -837,9 +873,6 @@
         </div>
       </section>
 
-      <!-- =========================================================
-           MÓDULO 4: GESTIÓN DE BENEFICIOS Y JORNADAS (CLAP, GAS, SALUD)
-      ========================================================== -->
       <section id="tab-beneficios" class="module-section">
         <div class="card write-protected">
           <div class="card-header"><h2 class="card-title">Control de Entregas y Operativos Comunitarios</h2></div>
@@ -895,12 +928,8 @@
         </div>
       </section>
 
-      <!-- =========================================================
-           MÓDULO 5: PROYECTOS COMUNITARIOS Y REPORTE DE INCIDENCIAS
-      ========================================================== -->
       <section id="tab-proyectos" class="module-section">
         <div class="grid-2">
-          <!-- Cartelera de Proyectos -->
           <div class="card write-protected">
             <div class="card-header"><h2 class="card-title">Cartelera de Proyectos Aprobados</h2></div>
             <form onsubmit="saveProyecto(event)">
@@ -926,7 +955,6 @@
             </form>
           </div>
 
-          <!-- Buzón de Incidencias -->
           <div class="card">
             <div class="card-header"><h2 class="card-title">Buzón Vecinal de Reporte de Averías</h2></div>
             <form onsubmit="saveIncidencia(event)">
@@ -954,7 +982,7 @@
                 <label>Foto de Evidencia (Opcional)</label>
                 <input type="file" id="inc_foto" accept="image/*" />
               </div>
-              <button type="submit" class="btn btn-outline">📢 Enviar Reporte Comunitario</button>
+              <button type="submit" class="btn btn-accent">📢 Enviar Reporte Comunitario</button>
             </form>
           </div>
         </div>
@@ -977,9 +1005,6 @@
         </div>
       </section>
 
-      <!-- =========================================================
-           MÓDULO 7: SEGURIDAD, ROLES Y FUNCIONAMIENTO OFFLINE
-      ========================================================== -->
       <section id="tab-seguridad" class="module-section">
         <div class="grid-2">
           <div class="card">
@@ -1024,7 +1049,6 @@
   </div>
 </div>
 
-<!-- MODAL PARA CONSTANCIAS Y RENDICIÓN DE CUENTAS -->
 <div class="modal-backdrop" id="docModal">
   <div class="modal-box">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
@@ -1038,10 +1062,8 @@
   </div>
 </div>
 
-<!-- TOASTS -->
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- FIREBASE SDK MODULAR + LÓGICA DE APLICACIÓN -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
@@ -1075,7 +1097,6 @@
     })
   });
 
-  // Estado global reactivo
   window.appState = {
     role: localStorage.getItem('gams_sc_role') || 'admin',
     councilName: localStorage.getItem('gams_sc_name') || 'Consejo Comunal Herencia Histórica Catedral',
@@ -1089,7 +1110,6 @@
     incidencias: []
   };
 
-  // Suscripción en tiempo real a las 7 colecciones en Firestore (gams-sc)
   const collectionsMap = [
     { name: 'censo_familias', key: 'familias' },
     { name: 'censo_comercios', key: 'comercios' },
@@ -1109,7 +1129,6 @@
     });
   });
 
-  // Funciones CRUD expuestas
   window.dbSave = async (colName, id, data) => {
     await setDoc(doc(db, colName, String(id)), data, { merge: true });
   };
@@ -1122,7 +1141,6 @@
 </script>
 
 <script>
-  // Registrar Service Worker para soporte Offline PWA en Vercel
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js').catch(() => {});
@@ -1133,7 +1151,6 @@
   let chartCalles = null;
   let chartFinanzas = null;
 
-  // Monitoreo de conexión
   function updateOnlineStatus() {
     const online = navigator.onLine;
     document.getElementById('netDot').className = online ? 'dot dot-online' : 'dot dot-offline';
@@ -1143,7 +1160,6 @@
   window.addEventListener('offline', updateOnlineStatus);
   updateOnlineStatus();
 
-  // Navegación
   const tabTitles = {
     dashboard: 'Panel de Estadísticas y Control',
     censo: 'Censo Demográfico y Socioeconómico',
@@ -1156,12 +1172,14 @@
   };
 
   window.switchTab = function(tabId) {
+    document.body.setAttribute('data-theme', tabId);
     document.querySelectorAll('.module-section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('tab-' + tabId).classList.add('active');
     document.querySelector(`.nav-item[data-tab="${tabId}"]`).classList.add('active');
     document.getElementById('pageTitle').textContent = tabTitles[tabId] || 'GAMS Comunal';
     document.getElementById('sidebar').classList.remove('open');
+    if (window.appState) window.renderAll();
   };
 
   window.toggleSidebar = function() {
@@ -1176,7 +1194,6 @@
     setTimeout(() => el.remove(), 3400);
   }
 
-  // Compresión de imágenes en Canvas para ahorrar cuota gratuita de Firestore
   function compressImage(file) {
     return new Promise((resolve) => {
       if (!file) return resolve('');
@@ -1199,20 +1216,16 @@
     });
   }
 
-  // Cálculo de edad
   function calcAge(birthDateStr) {
     if (!birthDateStr) return 30;
     const diff = Date.now() - new Date(birthDateStr).getTime();
     return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)));
   }
 
-  // =========================================================
-  // MÓDULO 1: CENSO FAMILIAR
-  // =========================================================
   window.addMemberRow = function(data = {}) {
     const div = document.createElement('div');
     div.className = 'grid-3 member-row';
-    div.style.cssText = 'border-bottom:1px dashed rgba(255,255,255,0.1); padding-bottom:8px; margin-bottom:8px;';
+    div.style.cssText = 'border-bottom:1px dashed #CBD5E1; padding-bottom:8px; margin-bottom:8px;';
     div.innerHTML = `
       <input type="text" class="m-nombre" placeholder="Nombre y Apellido" value="${data.nombre || ''}" required />
       <input type="text" class="m-parentesco" placeholder="Parentesco (Hijo/a, Cónyuge...)" value="${data.parentesco || ''}" required />
@@ -1337,7 +1350,7 @@
           <td><strong>${f.cedula}</strong></td>
           <td>${f.nombres} ${f.apellidos}<br><span style="font-size:0.75rem;color:var(--text-muted);">${f.telefono}</span></td>
           <td>${f.calle}, ${f.casa}</td>
-          <td><span class="badge badge-gold">${1 + (f.miembros?.length || 0)} pers.</span></td>
+          <td><span class="badge badge-comercio">${1 + (f.miembros?.length || 0)} pers.</span></td>
           <td>${f.laboral} • $${Number(f.ingreso || 0).toFixed(2)}</td>
           <td>${vulns.length ? `<span class="badge badge-amber">${vulns.join(', ')}</span>` : '<span class="badge badge-green">Estable</span>'}</td>
           <td>
@@ -1349,9 +1362,6 @@
     }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);">Sin registros censales aún.</td></tr>';
   };
 
-  // =========================================================
-  // COMERCIOS LOCALES
-  // =========================================================
   window.saveComercio = async function(e) {
     e.preventDefault();
     if (window.appState.role === 'contraloria') return showToast('Perfil de solo lectura.');
@@ -1368,9 +1378,6 @@
     showToast('✅ Comercio registrado en el directorio.');
   };
 
-  // =========================================================
-  // MÓDULO 2: CONSTANCIAS Y AVALES PDF + QR
-  // =========================================================
   window.emitirConstancia = async function(e) {
     e.preventDefault();
     if (window.appState.role === 'contraloria') return showToast('Perfil de solo lectura.');
@@ -1432,9 +1439,6 @@
     document.getElementById('docModal').classList.remove('open');
   };
 
-  // =========================================================
-  // MÓDULO 3: UNIDAD ADMINISTRATIVA Y FINANCIERA
-  // =========================================================
   window.saveMovimiento = async function(e) {
     e.preventDefault();
     if (window.appState.role === 'contraloria') return showToast('Perfil de solo lectura.');
@@ -1510,9 +1514,6 @@
     document.getElementById('docModal').classList.add('open');
   };
 
-  // =========================================================
-  // MÓDULO 4: BENEFICIOS (CLAP, GAS, SALUD)
-  // =========================================================
   window.saveBeneficio = async function(e) {
     e.preventDefault();
     if (window.appState.role === 'contraloria') return showToast('Perfil de solo lectura.');
@@ -1548,9 +1549,6 @@
     showToast('✅ Estado de entrega actualizado.');
   };
 
-  // =========================================================
-  // MÓDULO 5: PROYECTOS E INCIDENCIAS
-  // =========================================================
   window.saveProyecto = async function(e) {
     e.preventDefault();
     if (window.appState.role === 'contraloria') return showToast('Perfil de solo lectura.');
@@ -1592,9 +1590,6 @@
     showToast(`Estatus actualizado a: ${next}`);
   };
 
-  // =========================================================
-  // MÓDULO 6: EXPORTACIÓN EXCEL Y REPORTE EJECUTIVO
-  // =========================================================
   window.exportAllToExcel = function() {
     const wb = XLSX.utils.book_new();
 
@@ -1663,9 +1658,6 @@
     document.getElementById('docModal').classList.add('open');
   };
 
-  // =========================================================
-  // MÓDULO 7: ROLES Y RESPALDO
-  // =========================================================
   window.applyRoleChange = function() {
     const target = document.getElementById('roleSelector').value;
     const pin = document.getElementById('rolePinInput').value;
@@ -1696,9 +1688,10 @@
     a.click();
   };
 
-  // =========================================================
-  // RENDERIZADO GLOBAL Y GRÁFICOS
-  // =========================================================
+  function getActiveAccentColor() {
+    return getComputedStyle(document.body).getPropertyValue('--mod-accent').trim() || '#B8860B';
+  }
+
   window.renderAll = function() {
     const s = window.appState;
     document.getElementById('councilBanner').textContent = `${s.councilName} • Base de Datos: gams-sc`;
@@ -1716,27 +1709,27 @@
       el.style.display = s.role === 'admin' ? 'inline-flex' : 'none';
     });
 
-    // Selectores de vecinos
     const vecinoOpts = s.familias.map(f => `<option value="${f.cedula}">${f.cedula} - ${f.nombres} ${f.apellidos} (${f.calle})</option>`).join('') || '<option value="">Registre familias en el censo primero</option>';
     document.getElementById('doc_vecino').innerHTML = vecinoOpts;
     document.getElementById('ben_vecino').innerHTML = vecinoOpts;
 
     renderCensoTable();
 
-    // Comercios
-    document.getElementById('tbodyComercios').innerHTML = s.comercios.map(c => `
-      <tr>
-        <td><strong>${c.rif}</strong></td>
-        <td>${c.nombre}</td>
-        <td>${c.rubro}</td>
-        <td>${c.encargado}</td>
-        <td>${c.direccion}</td>
-        <td><span class="badge badge-gold">${c.formal}</span></td>
-        <td><button class="btn btn-danger btn-sm admin-only" onclick="deleteRecord('censo_comercios','${c.rif}')">✕</button></td>
-      </tr>
-    `).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);">Sin comercios registrados.</td></tr>';
+    document.getElementById('tbodyComercios').innerHTML = s.comercios.map(c => {
+      const badgeCls = c.rubro.includes('Posada') || c.rubro.includes('Hospedaje') ? 'badge-hoteleria' : 'badge-comercio';
+      return `
+        <tr>
+          <td><strong>${c.rif}</strong></td>
+          <td>${c.nombre}</td>
+          <td><span class="badge ${badgeCls}">${c.rubro}</span></td>
+          <td>${c.encargado}</td>
+          <td>${c.direccion}</td>
+          <td><span class="badge badge-gold">${c.formal}</span></td>
+          <td><button class="btn btn-danger btn-sm admin-only" onclick="deleteRecord('censo_comercios','${c.rif}')">✕</button></td>
+        </tr>
+      `;
+    }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);">Sin comercios registrados.</td></tr>';
 
-    // Constancias
     document.getElementById('tbodyConstancias').innerHTML = s.constancias.map(c => `
       <tr>
         <td><code>${c.code}</code></td>
@@ -1749,7 +1742,6 @@
       </tr>
     `).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);">Sin constancias emitidas.</td></tr>';
 
-    // Finanzas
     const ingUsd = s.finanzas.filter(m => m.tipo === 'Ingreso').reduce((a, b) => a + Number(b.usd || 0), 0);
     const egrUsd = s.finanzas.filter(m => m.tipo === 'Egreso').reduce((a, b) => a + Number(b.usd || 0), 0);
     const ingBs = s.finanzas.filter(m => m.tipo === 'Ingreso').reduce((a, b) => a + Number(b.bs || 0), 0);
@@ -1776,7 +1768,6 @@
       </tr>
     `).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--text-dim);">Sin asientos contables.</td></tr>';
 
-    // Beneficios
     document.getElementById('tbodyBeneficios').innerHTML = s.beneficios.map(b => `
       <tr>
         <td>${b.cedula}</td>
@@ -1790,11 +1781,10 @@
       </tr>
     `).join('') || '<tr><td colspan="8" style="text-align:center;color:var(--text-dim);">Sin entregas registradas.</td></tr>';
 
-    // Proyectos
     document.getElementById('proyectosList').innerHTML = s.proyectos.map(p => `
       <div style="background:var(--bg-elevated); border:1px solid var(--border-subtle); border-radius:10px; padding:14px;">
         <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-          <strong style="color:var(--gold-light);">${p.nombre}</strong>
+          <strong style="color:var(--text-main);">${p.nombre}</strong>
           <span class="badge badge-gold">$${Number(p.presupuesto).toFixed(2)}</span>
         </div>
         <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;">Responsable: ${p.responsable}</div>
@@ -1806,7 +1796,6 @@
       </div>
     `).join('') || '<p style="color:var(--text-dim);">Sin proyectos comunitarios registrados.</p>';
 
-    // Incidencias
     document.getElementById('tbodyIncidencias').innerHTML = s.incidencias.map(i => `
       <tr>
         <td>${i.fecha}</td>
@@ -1819,7 +1808,6 @@
       </tr>
     `).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);">Sin incidencias reportadas.</td></tr>';
 
-    // KPIs y Gráficos
     let totalHab = 0, vulCount = 0;
     let ninos = 0, jovenes = 0, adultos = 0, mayores = 0;
     const callesMap = {};
@@ -1852,8 +1840,9 @@
 
   function updateCharts(edadesData, callesMap, finData) {
     if (typeof Chart === 'undefined') return;
-    Chart.defaults.color = '#A1A1AA';
-    Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+    Chart.defaults.color = '#475569';
+    Chart.defaults.borderColor = 'rgba(15, 23, 42, 0.08)';
+    const activeColor = getActiveAccentColor();
 
     if (chartEdades) chartEdades.destroy();
     chartEdades = new Chart(document.getElementById('chartEdades'), {
@@ -1862,7 +1851,7 @@
         labels: ['Niños (0-12)', 'Jóvenes (13-25)', 'Adultos (26-59)', 'Adultos Mayores (60+)'],
         datasets: [{
           data: edadesData,
-          backgroundColor: ['#F3E5AB', '#D4AF37', '#AA8020', '#52525B'],
+          backgroundColor: ['#0284C7', '#7E22CE', '#D4AF37', '#059669'],
           borderWidth: 0
         }]
       },
@@ -1877,7 +1866,7 @@
         datasets: [{
           label: 'Familias por Sector',
           data: Object.values(callesMap).length ? Object.values(callesMap) : [0],
-          backgroundColor: '#D4AF37',
+          backgroundColor: activeColor,
           borderRadius: 6
         }]
       },
@@ -1892,7 +1881,7 @@
         datasets: [{
           label: 'Monto en USD ($)',
           data: finData,
-          backgroundColor: ['#10B981', '#EF4444'],
+          backgroundColor: ['#059669', '#DC2626'],
           borderRadius: 6
         }]
       },
